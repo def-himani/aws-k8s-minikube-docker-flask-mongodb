@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ t }}</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/emoji.css') }}">
+  
+  <script src="{{ url_for('static', filename='assets/twemoji.min.js') }}"></script>  
+  <script src="{{ url_for('static', filename='assets/emoji.js') }}"></script>
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #212529;
+    }
+    .credits {
+      margin-top: 30px;
+      font-size: 1rem;
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="#">To-Do App</a>
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a href="/list" class="nav-link {{ a1 }}">All</a></li>
+        <li class="nav-item"><a href="/" class="nav-link {{ a2 }}">Uncompleted</a></li>
+        <li class="nav-item"><a href="/completed" class="nav-link {{ a3 }}">Completed</a></li>
+      </ul>
+      <a href="/about" class="btn btn-outline-light btn-sm">About</a>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container text-center">
+    <h1 class="display-6 mb-4">{{ h }}</h1>
+    <hr class="w-50 mx-auto mb-4">
+
+    <div class="credits">
+      <p>This is a simple Flask + MongoDB To-Do web application built for <b>Cloud Computing and Big Data Systems</b> (Fall 2025).</p>
+      <p>It demonstrates containerization with <b>Docker</b>, orchestration using <b>Kubernetes (Minikube & AWS EKS)</b>, and deployment best practices.</p>
+      <p class="mt-4"><em>Created by Team XYZ — {{ t }}</em></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
