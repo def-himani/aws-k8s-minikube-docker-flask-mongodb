@@ -1,4 +1,4 @@
-# Base image
+# Use official slim Python image
 FROM python:3.11-slim
 
 # Set working directory
@@ -14,9 +14,12 @@ COPY . .
 # Expose Flask port
 EXPOSE 5000
 
-# Set environment variables for MongoDB connection
+# Environment variables
 ENV MONGO_HOST=mongodb
 ENV MONGO_PORT=27017
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=5000
 
-# Run the app
-CMD ["python", "app.py"]
+# Run the Flask app
+CMD ["flask", "run"]
