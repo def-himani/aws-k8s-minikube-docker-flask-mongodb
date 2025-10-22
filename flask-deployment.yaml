@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: flask-app
-          image: himanika1822/aws-k8s-minikube-docker-flask-mongodb-flask-app:latest
+          image: himanika1822/flask-todo:latest
           ports:
             - containerPort: 5000
           env:
