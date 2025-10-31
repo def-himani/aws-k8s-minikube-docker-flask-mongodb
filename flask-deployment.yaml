@@ -1,9 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-deployment
+  name: flask-app
 spec:
-  replicas: 1
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1   # maximum pods down during update
+      maxSurge: 1         # maximum extra pods created temporarily
   selector:
     matchLabels:
       app: flask-app
@@ -13,25 +18,29 @@ spec:
         app: flask-app
     spec:
       containers:
-        - name: flask-app
-          image: himanika1822/flask-todo:latest
-          ports:
-            - containerPort: 5000
-          env:
-            - name: MONGO_HOST
-              value: "mongodb-service"  # Service name of MongoDB in the cluster
-            - name: MONGO_PORT
-              value: "27017"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: flask-service
-spec:
-  selector:
-    app: flask-app
-  ports:
-    - protocol: TCP
-      port: 5000
-      targetPort: 5000
-  type: NodePort
+      - name: flask-app
+        image: himanika1822/todo-flask:v10   # <-- your current Docker image
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_URI
+          value: mongodb://mongo:27017/todo-db
+        # --- Add health monitoring below ---
+        # Liveness probe checks if container is alive
+        livenessProbe:
+          httpGet:
+            path: /health         # Flask endpoint for health
+            port: 5000
+          initialDelaySeconds: 15  # wait 15s before first probe
+          periodSeconds: 10        # check every 10s
+          timeoutSeconds: 3        # 3s timeout for each probe
+          failureThreshold: 3      # after 3 fails, container restarts
+        # Readiness probe checks if app is ready to serve traffic
+        readinessProbe:
+          httpGet:
+            path: /ready           # Flask endpoint for readiness
+            port: 5000
+          initialDelaySeconds: 5   # start checking sooner
+          periodSeconds: 5
+          timeoutSeconds: 2
+          failureThreshold: 3

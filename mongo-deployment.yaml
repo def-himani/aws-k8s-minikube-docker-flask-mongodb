@@ -1,38 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb
+  name: mongo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongodb
+      app: mongo
   template:
     metadata:
       labels:
-        app: mongodb
+        app: mongo
     spec:
       containers:
-      - name: mongodb
+      - name: mongo
         image: mongo:6.0
         ports:
         - containerPort: 27017
         volumeMounts:
-        - name: mongo-data
-          mountPath: /data/db
+        - mountPath: /data/db
+          name: mongo-storage
       volumes:
-      - name: mongo-data
-        emptyDir: {}
+      - name: mongo-storage
+        persistentVolumeClaim:
+          claimName: mongo-pvc
 ---
 apiVersion: v1
-kind: Service
+kind: PersistentVolumeClaim
 metadata:
-  name: mongodb-service
+  name: mongo-pvc
 spec:
-  selector:
-    app: mongodb
-  ports:
-  - protocol: TCP
-    port: 27017
-    targetPort: 27017
-  type: ClusterIP
+  storageClassName: gp2       # matches your cluster's storage class
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 512Mi
