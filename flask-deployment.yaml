@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: flask-app
 spec:
-  replicas: 3
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -25,22 +25,21 @@ spec:
         env:
         - name: MONGO_URI
           value: mongodb://mongo:27017/todo-db
-        # --- Add health monitoring below ---
         # Liveness probe checks if container is alive
         livenessProbe:
           httpGet:
-            path: /health         # Flask endpoint for health
+            path: /health  
             port: 5000
-          initialDelaySeconds: 15  # wait 15s before first probe
-          periodSeconds: 10        # check every 10s
-          timeoutSeconds: 3        # 3s timeout for each probe
-          failureThreshold: 3      # after 3 fails, container restarts
+          initialDelaySeconds: 15  
+          periodSeconds: 10        
+          timeoutSeconds: 3    
+          failureThreshold: 3   
         # Readiness probe checks if app is ready to serve traffic
         readinessProbe:
           httpGet:
-            path: /ready           # Flask endpoint for readiness
-            port: 5000
-          initialDelaySeconds: 5   # start checking sooner
+            path: /ready         
+            port: 5000kubectl port-forward -n monitoring prometheus-prometheus-kube-prometheus-prometheus-0 9090:9090 &
+          initialDelaySeconds: 5  
           periodSeconds: 5
           timeoutSeconds: 2
           failureThreshold: 3

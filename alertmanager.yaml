@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: monitoring
+data:
+  alertmanager.yaml: |-      
+    global:
+      resolve_timeout: 5m
+
+    route:
+      receiver: slack-notifications
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 1h
+
+    receivers:
+      - name: slack-notifications
+        slack_configs:
+          - api_url: 'https://hooks.slack.com/services/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'
+            channel: '#a2-k8s-alert' 
+            send_resolved: true
