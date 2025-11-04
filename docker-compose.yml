@@ -3,7 +3,7 @@ services:
     build: .
     container_name: flask-app
     ports:
-      - "5002:5002"  # Local port 5001 maps to container 5000
+      - "5002:5002" 
     environment:
       - MONGO_HOST=mongodb
       - MONGO_PORT=27017

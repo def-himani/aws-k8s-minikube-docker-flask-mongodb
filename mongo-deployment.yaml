@@ -30,7 +30,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: mongo-pvc
 spec:
-  storageClassName: gp2       # matches your cluster's storage class
+  storageClassName: gp2   
   accessModes:
   - ReadWriteOnce
   resources:

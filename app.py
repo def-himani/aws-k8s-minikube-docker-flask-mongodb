@@ -4,17 +4,11 @@ from bson.objectid import ObjectId
 from bson.errors import InvalidId
 import os
 
-# -----------------------------
-# MongoDB connection
-# -----------------------------
 mongo_uri = os.environ.get("MONGO_URI", "mongodb://mongo:27017/todo-db")
 client = MongoClient(mongo_uri)
 db = client.get_default_database()  # Use database from URI
 todos = db.todo  # Collection
 
-# -----------------------------
-# Flask app
-# -----------------------------
 app = Flask(__name__)
 title = "TODO with Flask"
 heading = "ToDo Reminder"
@@ -22,9 +16,6 @@ heading = "ToDo Reminder"
 def redirect_url():
     return request.args.get('next') or request.referrer or url_for('tasks')
 
-# -----------------------------
-# Routes
-# -----------------------------
 @app.route('/health')
 def health():
     return jsonify(status="UP"), 200
@@ -111,9 +102,6 @@ def search():
 def about():
     return render_template('credits.html', t=title, h=heading)
 
-# -----------------------------
-# Run app
-# -----------------------------
 if __name__ == "__main__":
     env = os.environ.get('FLASK_ENV', 'development')
     port = int(os.environ.get('PORT', 5000))  # Match YAML containerPort

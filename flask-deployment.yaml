@@ -7,8 +7,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 1   # maximum pods down during update
-      maxSurge: 1         # maximum extra pods created temporarily
+      maxUnavailable: 1  
+      maxSurge: 1        
   selector:
     matchLabels:
       app: flask-app
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: himanika1822/todo-flask:v10   # <-- your current Docker image
+        image: himanika1822/todo-flask:v10
         ports:
         - containerPort: 5000
         env:
